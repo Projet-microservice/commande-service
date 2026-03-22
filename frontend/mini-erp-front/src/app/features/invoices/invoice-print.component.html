@@ -1,0 +1,43 @@
+<div class="no-print mb-4 d-flex gap-2">
+  <button class="btn btn-outline-secondary" routerLink="/home"><i class="bi bi-arrow-left"></i> Boutique</button>
+  <button class="btn btn-primary" (click)="print()"><i class="bi bi-printer"></i> Imprimer</button>
+  <button class="btn btn-danger" (click)="downloadPDF()"><i class="bi bi-file-earmark-pdf"></i> Télécharger PDF</button>
+</div>
+
+<div class="invoice-container p-5 bg-white shadow-sm border rounded" *ngIf="invoice as inv">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <div class="fw-bold fs-4">MINI ERP</div>
+    <div class="text-muted">Facture #{{ inv.id }}</div>
+  </div>
+  <div class="row mb-4">
+    <div class="col-6">
+      <h6 class="fw-bold">Client</h6>
+      <div>{{ inv.order?.customer?.nom || '-' }}</div>
+      <div>{{ inv.order?.customer?.email || '-' }}</div>
+      <div>{{ inv.order?.customer?.adresse || '-' }}</div>
+    </div>
+  </div>
+  <table class="table table-bordered mb-4">
+    <thead>
+      <tr>
+        <th>Produit</th>
+        <th>Quantité</th>
+        <th>Prix HT</th>
+        <th>Total HT</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let it of inv.order?.items || []">
+        <td>{{ it.product.nom }}</td>
+        <td>{{ it.quantity }}</td>
+        <td>{{ it.product.prix | number:'1.0-2' }} TND</td>
+        <td>{{ (it.product.prix || 0) * (it.quantity || 0) | number:'1.0-2' }} TND</td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="text-end">
+    <div class="mb-1">Total HT: {{ (inv.montant || 0) | number:'1.0-2' }} TND</div>
+    <div class="mb-1">TVA (19%): {{ ((inv.montant || 0) * 0.19) | number:'1.0-2' }} TND</div>
+    <div class="fw-bold fs-5">Total TTC: {{ ((inv.montant || 0) * 1.19) | number:'1.0-2' }} TND</div>
+  </div>
+</div>

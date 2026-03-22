@@ -1,0 +1,108 @@
+<div class="container-fluid">
+  <div class="d-flex align-items-center justify-content-between mb-3">
+    <h2 class="mb-0">Produits</h2>
+    <button class="btn btn-primary" (click)="toggleCreate()">Ajouter un produit</button>
+  </div>
+  <form class="card card-elevated p-3 mb-3" *ngIf="createOpen" (ngSubmit)="create()">
+    <div class="row g-2">
+      <div class="col-12 col-md">
+        <label class="form-label">Nom</label>
+        <input class="form-control" placeholder="Nom" [(ngModel)]="form.nom" name="nom" />
+      </div>
+      <div class="col-6 col-md-2">
+        <label class="form-label">Prix</label>
+        <input class="form-control" placeholder="Prix" type="number" [(ngModel)]="form.prix" name="prix" />
+      </div>
+      <div class="col-6 col-md-2">
+        <label class="form-label">Stock</label>
+        <input class="form-control" placeholder="Quantité" type="number" [(ngModel)]="form.quantiteDisponible" name="quantiteDisponible" />
+      </div>
+      <div class="col-6 col-md-2">
+        <label class="form-label">Catégorie</label>
+        <input class="form-control" placeholder="Catégorie" [(ngModel)]="form.categorie" name="categorie" />
+      </div>
+      <div class="col-12 col-md-3">
+        <label class="form-label">Image</label>
+        <input type="file" class="form-control" (change)="onCreateFile($event)" />
+      </div>
+      <div class="col-12 col-md-2 d-flex align-items-end">
+        <button class="btn btn-success w-100" type="submit">Ajouter</button>
+      </div>
+    </div>
+  </form>
+
+  <div class="card card-elevated p-3 mb-3">
+    <div class="row g-2">
+      <div class="col-12 col-md-4">
+        <input class="form-control" placeholder="Recherche nom..." [(ngModel)]="searchTerm" name="searchTerm" (ngModelChange)="onSearch()" />
+      </div>
+      <div class="col-12 col-md-3">
+        <input class="form-control" placeholder="Catégorie..." [(ngModel)]="searchCategory" name="searchCategory" (ngModelChange)="onSearch()" />
+      </div>
+    </div>
+  </div>
+
+  <div class="row g-3">
+    <div class="col-12 col-sm-6 col-md-4 col-lg-3" *ngFor="let p of products">
+      <div class="card product-card shadow-sm">
+        <img [src]="imageSrc(p)" class="card-img-top" [alt]="p.nom" />
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center mb-1">
+            <h6 class="card-title mb-0">{{ p.nom }}</h6>
+            <span class="badge" [ngClass]="p.quantiteDisponible ? 'bg-success-subtle text-success' : 'bg-danger-subtle text-danger'">
+              {{ p.quantiteDisponible || 0 }} en stock
+            </span>
+          </div>
+          <div class="d-flex justify-content-between align-items-center">
+            <div class="fw-semibold fs-5 text-primary">{{ p.prix | number:'1.0-2' }} TND</div>
+            <div class="btn-group">
+              <button class="btn btn-sm btn-outline-secondary" (click)="toggleFav(p)">
+                <i class="bi bi-heart"></i>
+              </button>
+              <button class="btn btn-sm btn-outline-primary" (click)="addToCart(p)">
+                <i class="bi bi-cart-plus"></i> Ajouter
+              </button>
+              <button class="btn btn-sm btn-outline-secondary" (click)="startEdit(p)">
+                <i class="bi bi-pencil"></i>
+              </button>
+              <button class="btn btn-sm btn-outline-danger" (click)="delete(p.id!)">
+                <i class="bi bi-trash"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <form class="card card-elevated p-3 mt-3" *ngIf="edit">
+    <div class="row g-2 align-items-end">
+      <div class="col-12 col-md">
+        <label class="form-label">Nom</label>
+        <input class="form-control" [(ngModel)]="edit.nom" name="editNom"/>
+      </div>
+      <div class="col-6 col-md-2">
+        <label class="form-label">Prix</label>
+        <input type="number" class="form-control" [(ngModel)]="edit.prix" name="editPrix"/>
+      </div>
+      <div class="col-6 col-md-2">
+        <label class="form-label">Stock</label>
+        <input type="number" class="form-control" [(ngModel)]="edit.quantiteDisponible" name="editStock"/>
+      </div>
+      <div class="col-6 col-md-2">
+        <label class="form-label">Catégorie</label>
+        <input class="form-control" [(ngModel)]="edit.categorie" name="editCategorie"/>
+      </div>
+      <div class="col-12 col-md-3">
+        <label class="form-label">Image</label>
+        <input type="file" class="form-control" (change)="onEditFile($event)" />
+      </div>
+      <div class="col-12 col-md-2">
+        <button class="btn btn-primary w-100" (click)="saveEdit()">Enregistrer</button>
+      </div>
+      <div class="col-12 col-md-2">
+        <button class="btn btn-light w-100" (click)="cancelEdit()">Annuler</button>
+      </div>
+    </div>
+  </form>
+</div>

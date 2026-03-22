@@ -1,0 +1,41 @@
+<div class="container-fluid">
+  <div class="d-flex align-items-center justify-content-between mb-3">
+    <h2 class="mb-0">Factures</h2>
+    <div class="input-group" style="max-width:420px">
+      <label class="input-group-text">Commande</label>
+      <select class="form-select" [(ngModel)]="selectedOrderId">
+        <option [ngValue]="null">-- sélectionner --</option>
+        <option *ngFor="let o of orders" [ngValue]="o.id">#{{ o.id }}</option>
+      </select>
+      <button class="btn btn-primary" (click)="generate()">Générer</button>
+    </div>
+  </div>
+  <div class="card card-elevated">
+    <div class="table-responsive">
+      <table class="table table-hover align-middle mb-0">
+        <thead class="table-light">
+          <tr><th>ID</th><th>Montant</th><th>Status</th><th class="text-end">Actions</th></tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let f of invoices">
+            <td>{{ f.id }}</td>
+            <td>{{ f.montant || 0 | number:'1.0-2' }} TND</td>
+            <td>
+              <span class="badge me-2" [ngClass]="f.status === 'EN_ATTENTE' ? 'bg-warning-subtle text-warning' : 'bg-success-subtle text-success'">{{ f.status }}</span>
+              <select class="form-select form-select-sm d-inline-block w-auto" [(ngModel)]="f.status" (change)="updateStatus(f)">
+                <option value="EN_ATTENTE">En attente</option>
+                <option value="PAYEE">Payée</option>
+              </select>
+            </td>
+            <td class="text-end">
+              <div class="btn-group">
+                <a class="btn btn-sm btn-outline-secondary" [routerLink]="['/invoice', f.id, 'print']"><i class="bi bi-printer"></i> Imprimer</a>
+                <button class="btn btn-sm btn-outline-danger" (click)="delete(f.id!)"><i class="bi bi-trash"></i></button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

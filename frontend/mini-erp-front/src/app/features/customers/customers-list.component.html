@@ -1,0 +1,53 @@
+<div class="container-fluid">
+  <div class="d-flex align-items-center justify-content-between mb-3">
+    <h2 class="mb-0">Clients</h2>
+    <div class="d-flex gap-2">
+      <input class="form-control" placeholder="Rechercher..." [(ngModel)]="search" name="search"/>
+      <button class="btn btn-primary" (click)="toggleCreate()">Ajouter</button>
+    </div>
+  </div>
+  <form class="card card-elevated p-3 mb-3" *ngIf="createOpen" (ngSubmit)="create()">
+    <div class="row g-2">
+      <div class="col-12 col-md-3">
+        <label class="form-label">Nom</label>
+        <input class="form-control" placeholder="Nom" [(ngModel)]="form.nom" name="nom" />
+      </div>
+      <div class="col-12 col-md-3">
+        <label class="form-label">Email</label>
+        <input class="form-control" placeholder="Email" [(ngModel)]="form.email" name="email" />
+      </div>
+      <div class="col-12 col-md-3">
+        <label class="form-label">Téléphone</label>
+        <input class="form-control" placeholder="Téléphone" [(ngModel)]="form.telephone" name="telephone" />
+      </div>
+      <div class="col-12 col-md-3">
+        <label class="form-label">Adresse</label>
+        <input class="form-control" placeholder="Adresse" [(ngModel)]="form.adresse" name="adresse" />
+      </div>
+      <div class="col-12 text-end">
+        <button class="btn btn-success">Ajouter</button>
+      </div>
+    </div>
+  </form>
+  <div class="card card-elevated">
+    <div class="table-responsive">
+      <table class="table table-hover align-middle mb-0">
+        <thead class="table-light">
+          <tr><th>ID</th><th>Nom</th><th>Email</th><th>Téléphone</th><th>Adresse</th><th class="text-end">Actions</th></tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let c of filtered()">
+            <td>{{ c.id }}</td><td>{{ c.nom }}</td><td>{{ c.email }}</td><td>{{ c.telephone }}</td><td>{{ c.adresse }}</td>
+            <td class="text-end">
+              <div class="btn-group">
+                <button class="btn btn-sm btn-outline-danger" (click)="delete(c.id!)" title="Supprimer">
+                  <i class="bi bi-trash"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
